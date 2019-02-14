@@ -32,7 +32,6 @@ public class AdminAppsMenu {
         return driver.findElements(locator).size() > 0;
     }
 
-
     @Before
     public void start() {
         driver = new ChromeDriver();
@@ -50,8 +49,7 @@ public class AdminAppsMenu {
         List<WebElement> menus = table.findElements(By.tagName("li"));
 
         for (int i = 1; i <= menus.size(); i++) {
-            System.out.println("iteration = " + i);
-            driver.findElement(By.cssSelector("ul#box-apps-menu>li:nth-child(" + i + ")")).click();
+            driver.findElement(By.cssSelector("ul#box-apps-menu>li:nth-child("+i+")")).click();
             assertTrue(isElementPresent(By.cssSelector("td#content>h1")));
 
             if (areElementsPresent(By.cssSelector("li.selected li"))) {
@@ -60,12 +58,12 @@ public class AdminAppsMenu {
                 List<WebElement> submenus = docs.findElements(By.tagName("li"));
 
                 for (int j = 1; j < submenus.size() + 1; j++) {
-                    driver.findElement(By.cssSelector("ul.docs>li:nth-child(" + j + ")")).click();
+                    driver.findElement(By.cssSelector("ul.docs>li:nth-child("+j+")")).click();
                 }
             }
         }
     }
-    
+
     @After
     public void stop() {
         driver.quit();
