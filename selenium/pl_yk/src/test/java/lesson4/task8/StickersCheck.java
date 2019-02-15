@@ -47,7 +47,7 @@ public class StickersCheck {
             WebElement section = sections.get(i);
 
             if (areElementsPresent(By.tagName("li"))) {
-                List<WebElement> ducks = section.findElements(By.cssSelector("li.product.column.shadow.hover-light"));
+                List<WebElement> ducks = section.findElements(By.cssSelector("a.link"));
 
                 for (int j = 0; j < ducks.size(); j++) {
                     WebElement duck = ducks.get(j);
