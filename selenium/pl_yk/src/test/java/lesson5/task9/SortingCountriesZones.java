@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,7 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class SortingCountriesZones {
     public WebDriver driver;
@@ -53,7 +53,7 @@ public class SortingCountriesZones {
     }
 
     @Test
-    public void adminCheckCountries() throws NoSuchElementException {
+    public void adminCheckCountries() {
         driver.get("http://localhost/litecard/admin");
         driver.findElement(By.name("username")).sendKeys("admin");
         driver.findElement(By.name("password")).sendKeys("admin");
@@ -108,7 +108,7 @@ public class SortingCountriesZones {
     }
 
     @Test
-    public void adminCheckGeoZones() throws NoSuchElementException {
+    public void adminCheckGeoZones() {
         driver.get("http://localhost/litecard/admin");
         driver.findElement(By.name("username")).sendKeys("admin");
         driver.findElement(By.name("password")).sendKeys("admin");
@@ -119,7 +119,7 @@ public class SortingCountriesZones {
 
         List<String> geoZones = new ArrayList<>();
 
-        for (int i = 1; i < countryRows.size(); i++) {
+        for (int i = 1; i <= countryRows.size(); i++) {
             WebElement table = driver.findElement(By.cssSelector("td#content table.dataTable tbody"));
             System.out.println(table.findElement(By.xpath("./tr[@class='row'][" + i + "]/td[3]")).getText());
             table.findElement(By.xpath("./tr[@class='row'][" + i + "]/td[3]/a")).click();
@@ -130,16 +130,20 @@ public class SortingCountriesZones {
             for (int j = 1; j < zoneRows.size() - 1; j++) {
                 WebElement geoZoneRow = zoneRows.get(j);
 
-                if (isElementPresent(By.xpath(".//td[3]//option[@selected='selected']"))) {
+                try {
                     String geoZoneName = geoZoneRow.findElement(By.xpath("./td[3]//option[@selected='selected']")).getAttribute("textContent");
                     System.out.println(j + geoZoneName);
                     geoZones.add(geoZoneName);
+
+                } catch (NoSuchElementException ex) {
                 }
             }
+
             System.out.println("Are Geozones sorted correctly? " + isSortedList(geoZones));
             driver.findElement(By.name("cancel")).click();
             driver.findElement(By.cssSelector("td#content table.dataTable tbody"));
         }
+
     }
 
     @After
