@@ -9,7 +9,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class SortingCountriesZones {
     public WebDriver driver;
@@ -80,12 +82,14 @@ public class SortingCountriesZones {
         //**************** check "non-zero" Zones ***************************
         int k = 1;
         for (String zonek : zonesNumber) {
+
             if (!zonek.equals("0")) {
                 WebElement table = driver.findElement(By.cssSelector("td#content table.dataTable tbody"));
                 System.out.println("Country with non-zero Zones: " + table.findElement(By.xpath("./tr[@class='row'][" + k + "]/td[5]")).getText());
                 table.findElement(By.xpath("./tr[@class='row'][" + k + "]/td[5]/a")).click();
+
                 List<WebElement> rowsZones = driver.findElements(By.cssSelector("#table-zones tr:not(.header)"));
-                System.out.println("Number of zones: " + rowsZones.size());
+                System.out.println("Number of zones: " + (rowsZones.size() - 1));
 
                 for (int j = 0; j < rowsZones.size() - 1; j++) {
                     WebElement rowZone = rowsZones.get(j);
@@ -115,25 +119,24 @@ public class SortingCountriesZones {
 
         List<String> geoZones = new ArrayList<>();
 
-        for (int i = 1; i <= countryRows.size(); i++) {
+        for (int i = 1; i < countryRows.size(); i++) {
             WebElement table = driver.findElement(By.cssSelector("td#content table.dataTable tbody"));
             System.out.println(table.findElement(By.xpath("./tr[@class='row'][" + i + "]/td[3]")).getText());
             table.findElement(By.xpath("./tr[@class='row'][" + i + "]/td[3]/a")).click();
 
-            List<WebElement> zoneRows = driver.findElements(By.cssSelector("#table-zones tr:not(.header)"));
-            System.out.println("Number of Geozones: " + zoneRows.size());
+            List<WebElement> zoneRows = driver.findElements(By.cssSelector("#table-zones tbody tr"));
+            System.out.println("Number of Geozones: " + (zoneRows.size() - 2));
 
             for (int j = 0; j < zoneRows.size() - 1; j++) {
-                WebElement rowZone = zoneRows.get(j);
-                String zoneName = rowZone.findElement(By.xpath("./td[3]")).getAttribute("textContent");
-                geoZones.add(zoneName);
+                WebElement geoZoneRow = zoneRows.get(j);
+                String geoZoneName = geoZoneRow.findElement(By.xpath("./td[3]//option[@selected='selected']")).getAttribute("textContent");
+                geoZones.add(geoZoneName);
             }
-
             System.out.println("Are Geozones sorted correctly? " + isSortedList(geoZones));
 
             driver.findElement(By.name("cancel")).click();
-            driver.findElement(By.cssSelector("td#content table.dataTable tbody"));
 
+            driver.findElement(By.cssSelector("td#content table.dataTable tbody"));
         }
     }
 
