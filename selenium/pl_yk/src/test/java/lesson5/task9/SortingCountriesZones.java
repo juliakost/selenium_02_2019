@@ -127,15 +127,17 @@ public class SortingCountriesZones {
             List<WebElement> zoneRows = driver.findElements(By.cssSelector("#table-zones tbody tr"));
             System.out.println("Number of Geozones: " + (zoneRows.size() - 2));
 
-            for (int j = 0; j < zoneRows.size() - 1; j++) {
+            for (int j = 1; j < zoneRows.size() - 1; j++) {
                 WebElement geoZoneRow = zoneRows.get(j);
-                String geoZoneName = geoZoneRow.findElement(By.xpath("./td[3]//option[@selected='selected']")).getAttribute("textContent");
-                geoZones.add(geoZoneName);
+
+                if (isElementPresent(By.xpath(".//td[3]//option[@selected='selected']"))) {
+                    String geoZoneName = geoZoneRow.findElement(By.xpath("./td[3]//option[@selected='selected']")).getAttribute("textContent");
+                    System.out.println(j + geoZoneName);
+                    geoZones.add(geoZoneName);
+                }
             }
             System.out.println("Are Geozones sorted correctly? " + isSortedList(geoZones));
-
             driver.findElement(By.name("cancel")).click();
-
             driver.findElement(By.cssSelector("td#content table.dataTable tbody"));
         }
     }
