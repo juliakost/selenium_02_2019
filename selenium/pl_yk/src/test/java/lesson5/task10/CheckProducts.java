@@ -9,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.StringTokenizer;
+
 public class CheckProducts {
     public WebDriver driver;
     public WebDriverWait wait;
@@ -74,18 +76,22 @@ public class CheckProducts {
 
         System.out.println("^^^Regular price properties on Main page^^^");
         System.out.println("Color: " + listMainPage[2]);
+        System.out.println(separateRGB(listMainPage[2]));
         System.out.println("Text decor: " + listMainPage[3]);
 
         System.out.println("^^^Sale price properties on Main page^^^");
         System.out.println("Color: " + listMainPage[6]);
+        System.out.println(separateRGB(listMainPage[6]));
         System.out.println("Text decor: " + listMainPage[7]);
 
         System.out.println("^^^Regular price properties on Item page^^^");
         System.out.println("Color: " + listItemPage[2]);
+        System.out.println(separateRGB(listItemPage[2]));
         System.out.println("Text decor: " + listItemPage[3]);
 
         System.out.println("^^^Sale price properties on Item page^^^");
         System.out.println("Color: " + listMainPage[6]);
+        System.out.println(separateRGB(listItemPage[6]));
         System.out.println("Text decor: " + listItemPage[7]);
 
         System.out.println("^^^Main Page^^^");
@@ -98,6 +104,38 @@ public class CheckProducts {
         System.out.println("Campaign price font size: " + listItemPage[8]);
         System.out.println("Regular price Font " + compareFont(listItemPage[4], listItemPage[8]));
     }
+
+
+    private String separateRGB(String rgb) {
+        //String rgb = color[0].toString();
+        //System.out.println(rgb);
+        String s1 = rgb.substring(4);
+        String s2 = s1.replace(')', ' ');
+        String s3 = s2.replace('(', ' ');
+        System.out.println(s3);
+        StringTokenizer st = new StringTokenizer(s3);
+        String r = st.nextToken(" ,".trim());
+        String g = st.nextToken(" ,".trim());
+        String b = st.nextToken(" ,".trim());
+
+        if (r.equals(g) && r.equals(b)) {
+            return "It is grey color";
+        } else if (g.equals(" 0") && (b.equals(" 0"))) {
+            return "It is red color";
+        } else
+            return "Color is not grey or red!";
+    }
+
+
+//    private String compareRGB(int r, int g, int b) {
+//        if (r == g && r == b) {
+//            return "Color is grey";
+//        } else if (g = 0 & b = 0) {
+//            return "Color is red";
+//        } else
+//            return "Color is not grey or red!";
+//    }
+
 
     private String compareText(String t1, String t2) {
         if (t1.equals(t2))
