@@ -1,5 +1,6 @@
 package lesson8.task14;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -58,5 +59,11 @@ public class CheckLinksOpen {
                 return handles.size() > 0 ? handles.iterator().next() : null;
             }
         };
+    }
+
+    @After
+    public void stop() {
+        driver.quit();
+        driver = null;
     }
 }
